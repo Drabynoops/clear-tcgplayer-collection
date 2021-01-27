@@ -5,7 +5,6 @@ from time import sleep
 chrome_driver_path = "{path}\chromedriver.exe"
 TCGPLAYER_EMAIL = "email@email.com"
 TCGPLAYER_PASSWORD = "password"
-MAX_CLICK = 50 #Largest number in your collection
 SLEEP_TIME = 5 #Varies with internet speed. 5 is default
 
 class TcgplayerCollectionClearer:
@@ -29,14 +28,18 @@ class TcgplayerCollectionClearer:
         sleep(SLEEP_TIME)
     
     def clear_collection(self):
-        down_arrows = self.driver.find_elements_by_class_name("CollectionDownArrow")
+        collection_containers = self.driver.find_elements_by_class_name("CollectionItemContainer")
 
-        for arrow in down_arrows:
-            for i in range(MAX_CLICK):
-                try:
-                    arrow.click()
-                except:
-                    pass
+        for container in collection_containers:
+            try:
+                num_items = int(container.find_element_by_class_name("CollectionText").text)
+                down_arrow = container.find_element_by_class_name("CollectionDownArrow")
+
+                for _ in range(num_items):
+                    down_arrow.click()
+            except Exception as err:
+                print("If this occurs, please screen shot it with the error message and the card it happened on and message Drabynoops with the info. Thanks.")
+                print(err)
 
 collection_clearer = TcgplayerCollectionClearer()
 collection_clearer.login()
