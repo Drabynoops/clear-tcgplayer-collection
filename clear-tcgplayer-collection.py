@@ -40,7 +40,11 @@ class TcgplayerCollectionClearer:
             except Exception as err:
                 print("If this occurs, please screen shot it with the error message and the card it happened on and message Drabynoops with the info. Thanks.")
                 print(err)
+    
+    def close(self):
+        self.driver.quit()
 
 collection_clearer = TcgplayerCollectionClearer()
 collection_clearer.login()
 collection_clearer.clear_collection()
+collection_clearer.close()
